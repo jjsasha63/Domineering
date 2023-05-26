@@ -10,7 +10,7 @@ import java.util.Random;
 public class CP1 {
 
 
-    private static final int TRIES = 10; //number of tries it performs to find the best move
+    private static final int TRIES = 40; //number of tries it performs to find the best move
     private static Board copy;
     private static int op,cur;
 
@@ -67,7 +67,7 @@ public class CP1 {
                 int temp = available_moves(state==1?2:1);
                 int temp_c = available_moves(state);
                 delete(moves.get(tmp)[0],moves.get(tmp)[1],state);
-                if(op>temp|| cur-1<=temp_c || (h==0&&v==0) || temp==0){
+                if(cur-op<temp_c-temp || (h==0&&v==0) || temp==0){
                     op  = temp;
                     cur = temp_c;
                     h = moves.get(tmp)[0];
