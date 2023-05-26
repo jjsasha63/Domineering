@@ -11,9 +11,16 @@ public class Board implements Cloneable{
 
     Integer[][] board;
 
-    private Integer horizontal,r,c, vertical,state;
+    private Integer horizontal;
+    private Integer r;
+    private Integer c;
+    private Integer vertical;
+
+    private Integer state;
 
     private String mes;
+
+    private Boolean cp;
 
     public Board(Integer horizontal, Integer vertical) {
         state = 1;
@@ -22,6 +29,7 @@ public class Board implements Cloneable{
         this.vertical = vertical;
         c=0;
         r = 0;
+        cp = false;
         board = new Integer[vertical][horizontal];
         for (int j = r; j < vertical; j++) {
             for (int k = c; k < horizontal; k++) {
@@ -29,6 +37,7 @@ public class Board implements Cloneable{
             }
         }
     }
+
 
     public void horizontal(int h, int v) throws InterruptedException {
         if (check(h,v,1)) {
@@ -85,20 +94,40 @@ public class Board implements Cloneable{
     }
 
     private void update() {
-        int j = 0,k =0;
+        int j = c,k =r;
         for (int i = r; i < vertical; i++){
             if (board[i][c] == 2 || board[i][c] == 1) j++;
+            else if(board[i][c] == 0)
+                if (i > r + 1 && board[i - 1][c] != 0)
+                    if ((i < vertical - 1 && board[i + 1][c] != 0) || i == vertical-1)
+                        if (c < horizontal - 1 && board[i][c + 1] != 0) j++;
+
             if (board[i][horizontal - 1] == 2 || board[i][horizontal - 1] == 1) k++;
+            else if(board[i][horizontal-1] == 0)
+                if (i > r + 1 && board[i - 1][horizontal-1] != 0)
+                    if ((i < vertical - 1 && board[i + 1][horizontal-1] != 0) || i == vertical-1)
+                        if (board[i][horizontal-2]!=0) k++;
         }
-        if(j== vertical) this.r++;
+        if(j== vertical)
+            this.r++;
         if(k== vertical) this.horizontal--;
-        j = 0;
-        k = 0;
+        j = r;
+        k = c;
         for (int i = c; i < horizontal; i++){
             if (board[r][i] == 2 || board[r][i] == 1) j++;
+            else if(board[r][i] == 0)
+                if (i > c + 1 && board[r][i-1] != 0)
+                    if ((i < horizontal - 1 && board[r][i+1] != 0)||i==horizontal-1)
+                        if (r < vertical - 1 && board[r+1][i] != 0) j++;
+
             if (board[vertical - 1][i] == 2 || board[vertical - 1][i] == 1) k++;
+            else if(board[vertical-1][i] == 0)
+                if (i > c + 1 && board[vertical-1][i-1] != 0)
+                    if ((i < horizontal - 1 && board[vertical-1][i+1] != 0)||i==horizontal-1)
+                        if (board[vertical-2][i] != 0) k++;
         }
-        if(j== horizontal) this.c++;
+        if(j== horizontal)
+            this.c++;
         if(k== horizontal) this.vertical--;
     }
 
